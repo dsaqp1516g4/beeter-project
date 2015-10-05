@@ -35,4 +35,4 @@ CREATE TABLE stings (
     last_modified datetime not null default current_timestamp,
     FOREIGN KEY (userid) REFERENCES users(id) on delete cascade,
     PRIMARY KEY (id)
-); 
+);
