@@ -9,6 +9,7 @@ import java.sql.*;
  * Created by juan on 30/09/15.
  */
 public class StingDAOImpl implements StingDAO {
+
     @Override
     public Sting createSting(String userid, String subject, String content) throws SQLException {
         Connection connection = null;
@@ -16,12 +17,14 @@ public class StingDAOImpl implements StingDAO {
         String id = null;
         try {
             connection = Database.getConnection();
+
             stmt = connection.prepareStatement(UserDAOQuery.UUID);
             ResultSet rs = stmt.executeQuery();
             if (rs.next())
                 id = rs.getString(1);
             else
                 throw new SQLException();
+
             stmt = connection.prepareStatement(StingDAOQuery.CREATE_STING);
             stmt.setString(1, id);
             stmt.setString(2, userid);
@@ -39,15 +42,19 @@ public class StingDAOImpl implements StingDAO {
         }
         return getStingById(id);
     }
+
     @Override
     public Sting getStingById(String id) throws SQLException {
         Sting sting = null;
+
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
+
             stmt = connection.prepareStatement(StingDAOQuery.GET_STING_BY_ID);
             stmt.setString(1, id);
+
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 sting = new Sting();
@@ -67,18 +74,22 @@ public class StingDAOImpl implements StingDAO {
         }
         return sting;
     }
+
     @Override
     public StingCollection getStings(long timestamp, boolean before) throws SQLException {
         StingCollection stingCollection = new StingCollection();
+
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
+
             if (before)
                 stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS);
             else
                 stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS_AFTER);
             stmt.setTimestamp(1, new Timestamp(timestamp));
+
             ResultSet rs = stmt.executeQuery();
             boolean first = true;
             while (rs.next()) {
@@ -104,17 +115,21 @@ public class StingDAOImpl implements StingDAO {
         }
         return stingCollection;
     }
+
     @Override
     public Sting updateSting(String id, String subject, String content) throws SQLException {
         Sting sting = null;
+
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
+
             stmt = connection.prepareStatement(StingDAOQuery.UPDATE_STING);
             stmt.setString(1, subject);
             stmt.setString(2, content);
             stmt.setString(3, id);
+
             int rows = stmt.executeUpdate();
             if (rows == 1)
                 sting = getStingById(id);
@@ -124,19 +139,25 @@ public class StingDAOImpl implements StingDAO {
             if (stmt != null) stmt.close();
             if (connection != null) connection.close();
         }
+
         return sting;
     }
+
     @Override
     public boolean deleteSting(String id) throws SQLException {
         Connection connection = null;
         PreparedStatement stmt = null;
         try {
             connection = Database.getConnection();
+
             stmt = connection.prepareStatement(StingDAOQuery.DELETE_STING);
             stmt.setString(1, id);
+
             int rows = stmt.executeUpdate();
             return (rows == 1);
         } catch (SQLException e) {
+
+
             throw e;
         } finally {
             if (stmt != null) stmt.close();
