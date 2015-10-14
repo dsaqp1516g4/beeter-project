@@ -84,7 +84,7 @@ public class StingDAOImpl implements StingDAO {
         try {
             connection = Database.getConnection();
 
-            if (before)
+            if(before)
                 stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS);
             else
                 stmt = connection.prepareStatement(StingDAOQuery.GET_STINGS_AFTER);
@@ -96,7 +96,6 @@ public class StingDAOImpl implements StingDAO {
                 Sting sting = new Sting();
                 sting.setId(rs.getString("id"));
                 sting.setUserid(rs.getString("userid"));
-                sting.setCreator(rs.getString("fullname"));
                 sting.setSubject(rs.getString("subject"));
                 sting.setCreationTimestamp(rs.getTimestamp("creation_timestamp").getTime());
                 sting.setLastModified(rs.getTimestamp("last_modified").getTime());
