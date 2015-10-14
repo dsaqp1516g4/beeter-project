@@ -16,5 +16,10 @@
   {
     "path": "(?i)stings/?([0-9a-f]{32})?",
     "methods": ["GET"]
+  },
+  {
+    "path": "login",
+    "methods": ["POST"]
   }
+
 ]
